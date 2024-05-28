@@ -1,0 +1,13 @@
+// {{pascalCase name}}.spec.ts
+describe('{{pascalCase name}}', () => {
+  beforeEach(() => {
+    // You can add any setup code here, such as visiting a URL or setting up test data
+  });
+
+  it('should display the {{pascalCase name}} component', () => {
+    cy.visit('/'); // Change this to the URL of your application
+    cy.get('selector-for-{{pascalCase name}}-component').should('exist'); // Change the selector accordingly
+  });
+
+  // Add more test cases as needed
+});
