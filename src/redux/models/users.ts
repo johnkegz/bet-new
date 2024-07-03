@@ -1,15 +1,5 @@
 import api from '../api';
 import { createModel } from '@rematch/core';
-import {
-    switchTabsForestry,
-    switchTabsForestryForTreeoUsers,
-    switchTabsPeople,
-    switchTabsPeopleForTreeoUsers,
-} from '../../utilites/permissionSwitchTabs';
-import { restructureUserOrganizationAndProjects } from '../../utilites/restructureUserOrganizationAndProjects';
-import { isAuthorized } from '../../utilites/permissionCheck';
-import { pagePermissions } from '../../constants';
-import { uniqueById } from '../../utilites/uniqueBy';
 
 const {
     createRequest,
@@ -293,8 +283,6 @@ const users = createModel<any>()({
         },
         getUser: async (data: any, store: any) => {
             dispatch.users.setIsGettingUser(true);
-            // let ff = await fetch('http://127.0.0.1:8000/sets/1/');
-            
             await fetch('http://127.0.0.1:8000/sets/1/')
                 .then((res) => {
                     return res.json()

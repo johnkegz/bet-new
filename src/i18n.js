@@ -2,24 +2,24 @@ import i18n from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import XHR from 'i18next-http-backend'
 
-import commonEn from './assets/locales/en.json';
-import commonId from './assets/locales/id.json';
-import commonPt from './assets/locales/pt.json';
-import commonFr from './assets/locales/fr.json';
-import commonDe from './assets/locales/de.json';
-import commonSw from './assets/locales/sw.json';
-import commonHr from './assets/locales/hr.json';
-import commonEs from './assets/locales/es.json';
+// import commonEn from './assets/locales/en.json';
+// import commonId from './assets/locales/id.json';
+// import commonPt from './assets/locales/pt.json';
+// import commonFr from './assets/locales/fr.json';
+// import commonDe from './assets/locales/de.json';
+// import commonSw from './assets/locales/sw.json';
+// import commonHr from './assets/locales/hr.json';
+// import commonEs from './assets/locales/es.json';
 
 const resources = {
-    en: { translations: commonEn },
-    id: { translations: commonId },
-    pt: { translations: commonPt },
-    fr: { translations: commonFr },
-    de: { translations: commonDe },
-    sw: { translations: commonSw },
-    hr: { translations: commonHr },
-    es: { translations: commonEs }
+    // en: { translations: commonEn },
+    // id: { translations: commonId },
+    // pt: { translations: commonPt },
+    // fr: { translations: commonFr },
+    // de: { translations: commonDe },
+    // sw: { translations: commonSw },
+    // hr: { translations: commonHr },
+    // es: { translations: commonEs }
 };
 
 const options = {

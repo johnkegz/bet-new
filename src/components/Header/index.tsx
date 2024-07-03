@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
     AppBar,
     Toolbar,
@@ -7,44 +7,54 @@ import {
     Drawer,
     Link,
     MenuItem,
-} from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
-import { Link as RouterLink, useHistory } from "react-router-dom";
+    Button,
+} from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { palette } from '../../theme/palette';
-import treeologo from '../../static/images/TREEO_CoolingThePlanet_white.png';
-import { useDispatch, useSelector } from 'react-redux'
+import Logo from '../../static/images/reset_button.svg';
+import { useDispatch, useSelector } from 'react-redux';
 import TextFields from './dropDownMenu';
-import './style.scss'
-import { checkMultipleViewUIElementPermission, checkViewUIElementPermission } from "../../utilites/permissionCheck";
-import { pagePermissions } from "../../constants";
-import { checkForWarn, useOpenWarnModal } from "../../utilites/warnBeforeExit";
-// import WarnDialog from "../WarnModal";
-import ProfileDropDown from "./ProfileDropDown";
-// import LanguageSwitcher from "../LanguageSwitcher";
-import { useTranslation } from "react-i18next";
+import './style.scss';
+import {
+    checkMultipleViewUIElementPermission,
+    checkViewUIElementPermission,
+} from '../../utilites/permissionCheck';
+import { checkForWarn, useOpenWarnModal } from '../../utilites/warnBeforeExit';
+import { useTranslation } from 'react-i18next';
 
 const headersData = [
     {
-        label: "Dashboard",
-        name:  "dashboard",
-        href: "/dashboard",
+        label: 'Home',
+        name: 'Home',
+        href: '/',
     },
     {
-        label: "Forestry",
-        name:  "forestry",
-        href: "/forestry",
+        label: 'Profile',
+        name: 'profile',
+        href: '/profile',
     },
     {
-        label: "People",
-        name:  "people",
-        href: "/users",
-    }
+        label: 'History',
+        name: 'history',
+        href: '/history',
+    },
+    {
+        label: 'Market',
+        name: 'market',
+        href: '/user',
+    },
+    {
+        label: 'Dashboard',
+        name: 'Dashboard',
+        href: '/dashboard',
+    },
 ];
 
 const useStyles = makeStyles(() => ({
     header: {
-        boxShadow: 'none', 
-        "@media (max-width: 900px)": {
+        boxShadow: 'none',
+        '@media (max-width: 900px)': {
             paddingLeft: 0,
         },
     },
@@ -54,24 +64,24 @@ const useStyles = makeStyles(() => ({
         transition: 'opacity .2s ease',
         opacity: 1,
         '&:hover': {
-            opacity: .7,
-        }
+            opacity: 0.7,
+        },
     },
     menuLinks: {
         display: 'flex',
-        flexDirection: "row",
-        height: "64px",
+        flexDirection: 'row',
+        height: '64px',
         '& > *': {
             padding: 0,
             '&:hover': {
                 backgroundColor: 'transparent',
-            }
-        }
+            },
+        },
     },
     menuButton: {
         display: 'inline-flex',
         alignItems: 'center',
-        height: "64px",
+        height: '64px',
         boxSizing: 'border-box',
         margin: 0,
         padding: '0 15px',
@@ -87,27 +97,25 @@ const useStyles = makeStyles(() => ({
         },
         '&:focus': {
             backgroundColor: palette.primary.light,
-        }
+        },
     },
     toolbar: {
-        display: "flex",
-
+        display: 'flex',
     },
     drawerContainer: {
-        padding: "20px",
+        padding: '20px',
     },
-    
 }));
 
 export default function Header() {
     const { header, menuButton, toolbar, drawerContainer, logo } = useStyles();
-    const state = useSelector((state): any => state)
-    const [organizations, setOrganization] = React.useState([])
-    const [currentOrganization, setCurrentOrganization] = React.useState<any>({})
-    const [isAssignedToProject, setIsAssignedToProject] = React.useState<boolean>(false)
-    const handleOpenWarnModal = useOpenWarnModal()
+    const state = useSelector((state): any => state);
+    const [organizations, setOrganization] = React.useState([]);
+    const [currentOrganization, setCurrentOrganization] = React.useState<any>({});
+    const [isAssignedToProject, setIsAssignedToProject] = React.useState<boolean>(false);
+    const handleOpenWarnModal = useOpenWarnModal();
     const router = useHistory();
-    
+
     const dispatch = useDispatch();
     const classes = useStyles();
     const [viewPort, setViewPort] = useState({
@@ -115,79 +123,77 @@ export default function Header() {
         drawerOpen: false,
     });
 
-    useEffect(() => {
-        if(state.users.user && state.users?.user?.email?.slice(-9) === 'treeo.one'){
-            setOrganization(state.activities?.activityFilterOptionData?.organizations)
-        }
-        else if (state.users.user && state.users.user.organizationsAndProjects && state.users?.user?.email && state.users?.user?.email?.slice(-9) !== 'treeo.one') {
-            const dataOrganizations = [...state.users.user.organizationsAndProjects.map(item => item.organization)]
-            setOrganization(dataOrganizations)
-        }
-    }, [
-        state.users.user && state.users?.user?.email, 
+    useEffect(() => {}, [
+        state.users.user && state.users?.user?.email,
         state.activities?.activityFilterOptionData?.organizations,
         state.users.user && state.users?.user?.organizationsAndProjects,
-        state.users.user && state.users?.user?.organizationsAndProjects && state.users?.user?.organizationsAndProjects?.length
-    ])
+        state.users.user &&
+            state.users?.user?.organizationsAndProjects &&
+            state.users?.user?.organizationsAndProjects?.length,
+    ]);
 
     useEffect(() => {
-        const value = state.users.user.userProject && state.users.user.userProject.length === 0 ? false : true; 
+        const value =
+            state.users.user.userProject &&
+            state.users.user.userProject.length === 0
+                ? false
+                : true;
         setIsAssignedToProject(value);
-    }, [state.users.user.userProject && state.users.user.userProject.length])
-
-    useEffect(() => {
-        if (
-            currentOrganization !== undefined && Object.keys(currentOrganization).length !== 0 &&
-            state.modules.modules.length !== 0
-        ) {
-            dispatch.roles.getRolesPerOrganization({
-                onSuccess: () => {
-                },
-                id: currentOrganization.id,
-            })
-        }
-    }, [currentOrganization, state.modules.modules])
-
+    }, [state.users.user.userProject && state.users.user.userProject.length]);
 
     const handleCurrentOrganization = (data: any) => {
-        setCurrentOrganization(data)
-    }
+        setCurrentOrganization(data);
+    };
 
     const { mobileView, drawerOpen } = viewPort;
 
     useEffect(() => {
         const setResponsiveness = () => {
             return window.innerWidth < 900
-                ? setViewPort((prevState) => ({ ...prevState, mobileView: true }))
-                : setViewPort((prevState) => ({ ...prevState, mobileView: false }));
+                ? setViewPort((prevState) => ({
+                      ...prevState,
+                      mobileView: true,
+                  }))
+                : setViewPort((prevState) => ({
+                      ...prevState,
+                      mobileView: false,
+                  }));
         };
 
         setResponsiveness();
 
-        window.addEventListener("resize", () => setResponsiveness());
+        window.addEventListener('resize', () => setResponsiveness());
     }, []);
 
     const selectProject = () => {
-        if(state.users.user && state.users?.user?.email?.slice(-9) === 'treeo.one') return <TextFields organizations={organizations} handleCurrentOrganization={handleCurrentOrganization} />
         //TODO: Permission to be fixed when view dashboard permission is add to the DB
-        return (<>{
-        ((state.users.user.userProject && checkViewUIElementPermission(pagePermissions.people.roleAndPermissions[0], state.users.user.userProject)) 
-        ||
-        (router.location.pathname.split('/')[1] === '' || router.location.pathname.split('/')[1] === 'dashboard'))
-        && <TextFields organizations={organizations} handleCurrentOrganization={handleCurrentOrganization} />}</>);
+        return (
+            <>
+                <TextFields
+                    organizations={organizations}
+                    handleCurrentOrganization={handleCurrentOrganization}
+                />
+            </>
+        );
         //return (<>{state.users.user.userProject && checkViewUIElementPermission(pagePermissions.people.roleAndPermissions[0], state.users.user.userProject) && <TextFields organizations={organizations} handleCurrentOrganization={handleCurrentOrganization} />}</>);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('authToken');
+        router.push('/login');
     };
 
     const displayDesktop = () => {
         return (
             <Toolbar className={toolbar}>
-                {treeoLogo}
-                {(isAssignedToProject || (state.users.user && state.users?.user?.email?.slice(-9) === 'treeo.one')) && <>
-                    {selectProject()}
-                    <div className={classes.menuLinks}>{getMenuButtons()}</div>
-                </>}
-                {/* <LanguageSwitcher /> */}
-                <ProfileDropDown />
+                <img src={Logo} className={logo} alt="Logo" />
+                {selectProject()}
+                <div className={classes.menuLinks}>
+                    {getMenuButtons()}
+                    <Button color="inherit" onClick={handleLogout}>
+                        Logout
+                    </Button>
+                </div>
             </Toolbar>
         );
     };
@@ -199,10 +205,16 @@ export default function Header() {
             setViewPort((prevState) => ({ ...prevState, drawerOpen: false }));
 
         return (
-            <Toolbar style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Toolbar
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                }}
+            >
                 <Drawer
                     {...{
-                        anchor: "left",
+                        anchor: 'left',
                         open: drawerOpen,
                         onClose: handleDrawerClose,
                     }}
@@ -210,170 +222,92 @@ export default function Header() {
                     <div className={drawerContainer}>{getDrawerChoices()}</div>
                 </Drawer>
 
-                <div>{treeoLogo}</div>
-                {isAssignedToProject && <><div>
-                    <IconButton
-                        {...{
-                            edge: "start",
-                            color: "inherit",
-                            "aria-label": "menu",
-                            "aria-haspopup": "true",
-                            onClick: handleDrawerOpen,
-                        }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                </div>
-                </>}
-                <ProfileDropDown />
+                {isAssignedToProject && (
+                    <>
+                        <div>
+                            <IconButton
+                                {...{
+                                    edge: 'start',
+                                    color: 'inherit',
+                                    'aria-label': 'menu',
+                                    'aria-haspopup': 'true',
+                                    onClick: handleDrawerOpen,
+                                }}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                        </div>
+                    </>
+                )}
             </Toolbar>
         );
     };
 
     const getDrawerChoices = () => {
         return headersData.map(({ label, name, href }) => {
-
             return (
                 <Link
                     {...{
                         component: RouterLink,
                         to: href,
-                        color: "inherit",
-                        style: { textDecoration: "none" },
+                        color: 'inherit',
+                        style: { textDecoration: 'none' },
                     }}
                     key={label}
                 >
-                    {<MenuItem>{label}</MenuItem>}
+                    <MenuItem>{label}</MenuItem>
                 </Link>
             );
-        });
+        }).concat(
+            <MenuItem key="logout">
+                <Button color="inherit" onClick={handleLogout}>
+                    Logout
+                </Button>
+            </MenuItem>
+        );
     };
-
-
-    const treeoLogo = (
-        <Link
-            onClick={(e) => {
-                if(checkForWarn(state.general.warnBeforeExit)) {
-                        e.preventDefault()
-                    return handleOpenWarnModal('/', true);
-                }
-            }}
-            {...{
-                component: RouterLink,
-                to: '/',
-                color: "inherit",
-                style: { textDecoration: "none" },
-            }}>
-            <img alt="treeoLogo" src={treeologo} className={logo} width="139" height="40"/>
-        </Link>
-    );
 
     const getMenuButtons = () => {
-        return headersData.map(({ label, name, href }) => {
-            if (
-                label === 'Forestry'
-                && state.users.user.userProject
-                && (!checkMultipleViewUIElementPermission(
-                    [
-                        ...pagePermissions.forestry.activities,
-                        ...pagePermissions.forestry.plots,
-                        ...pagePermissions.forestry.plannedActivities,
-                    ],
-                    state.users.user.userProject
-                ) || state.users?.user?.email?.slice(-9) === 'treeo.one')
-            ) {
-                return <RenderMenuItem 
-                        key={label}
-                        label={name} 
-                        warnBeforeExit={state.general.warnBeforeExit}
-                        href={href}
-                        menuButton={menuButton}
-                    />
-            }
-            if (
-                label === 'People'
-                && state.users.user.userProject
-                && (!checkMultipleViewUIElementPermission(
-                    [
-                        ...pagePermissions.people.users,
-                        ...pagePermissions.people.roleAndPermissions,
-                    ],
-                    state.users.user.userProject
-                ) || state.users?.user?.email?.slice(-9) === 'treeo.one')
-            ) {
-                return <RenderMenuItem 
-                        key={label}
-                        label={name} 
-                        warnBeforeExit={state.general.warnBeforeExit}
-                        href={href}
-                        menuButton={menuButton}
-                    />
-            }
-            if (
-                label === 'Dashboard'
-
-                //TODO: permissions to view the dashboard
-
-                // && state.users.user.userProject
-                // && !checkMultipleViewUIElementPermission(
-                //     [
-                //         ...pagePermissions.people.users,
-                //         ...pagePermissions.people.roleAndPermissions,
-                //     ],
-                //     state.users.user.userProject
-                // )
-            ) {
-                return <RenderMenuItem 
-                        key={label}
-                        label={name} 
-                        warnBeforeExit={state.general.warnBeforeExit}
-                        href={href}
-                        menuButton={menuButton}
-                    />
-            }
-
-        });
+        return headersData.map(({ label, name, href }) => (
+            <RenderMenuItem
+                key={label}
+                label={name}
+                warnBeforeExit={state.general.warnBeforeExit}
+                href={href}
+                menuButton={menuButton}
+            />
+        ));
     };
 
-    return (<>
-        <header>
-            <AppBar className={header} color="primary" position="fixed">
-                {mobileView ? displayMobile() : displayDesktop()}
-            </AppBar>
-        </header>
-        {/* <WarnDialog open={state.general.openWarnModal} /> */}
+    return (
+        <>
+            <header>
+                <AppBar className={header} color="primary" position="fixed">
+                    {mobileView ? displayMobile() : displayDesktop()}
+                </AppBar>
+            </header>
+            {/* <WarnDialog open={state.general.openWarnModal} /> */}
         </>
     );
 }
 
-const RenderMenuItem = ({
-    label,
-    warnBeforeExit,
-    href,
-    menuButton
-}) => {
-    const handleOpenWarnModal = useOpenWarnModal()
-    const { t } = useTranslation()
+const RenderMenuItem = ({ label, warnBeforeExit, href, menuButton }) => {
+    const handleOpenWarnModal = useOpenWarnModal();
+    const { t } = useTranslation();
     return (
-            <MenuItem >
-                <Link
-                    onClick={(e) => {
-                        if(checkForWarn(warnBeforeExit)) {
-                                e.preventDefault()
-                            return handleOpenWarnModal(href, true);
-                        }
-                    }}
-                    {...{
-                        component: RouterLink,
-                        className: menuButton,
-                        to: href,
-                        color: "inherit",
-                        style: { textDecoration: "none" },
-                    }}
-                >
-                    {t(label)}
-
-                </Link>
-            </MenuItem>
-        )
-}
+        <MenuItem>
+            <Link
+                href={href}
+                {...{
+                    component: RouterLink,
+                    className: menuButton,
+                    to: href,
+                    color: 'inherit',
+                    style: { textDecoration: 'none' },
+                }}
+            >
+                {t(label)}
+            </Link>
+        </MenuItem>
+    );
+};

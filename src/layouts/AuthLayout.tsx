@@ -1,8 +1,7 @@
-import React, { ReactNode } from 'react'
-import treeoIcon from '../static/images/treeo.png'
+import React, { ReactNode, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { Container, CssBaseline, Grid } from '@material-ui/core'
-import LanguageSwitcher from '../components/LanguageSwitcher';
+import { useHistory } from 'react-router-dom';
 
 interface IProps {
     children: ReactNode;
@@ -24,6 +23,13 @@ const useStyles = makeStyles((theme) => ({
 
 function AuthLayout({ children }: IProps) {
     const classes = useStyles();
+    const router = useHistory()
+      useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      router.push('/');
+    }
+  }, [router]);
 
     return (
         <Grid
@@ -34,13 +40,11 @@ function AuthLayout({ children }: IProps) {
             justifyContent="center"
             style={{ minHeight: '100vh' }}
         >
-            <LanguageSwitcher />
             <Grid item >
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
                     <div className={classes.paper}>
                         <div className={classes.avatar}>
-                            <img src={treeoIcon} />
                         </div>
                         {children}
                     </div>

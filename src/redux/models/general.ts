@@ -1,6 +1,8 @@
 import { createModel } from '@rematch/core';
 import api from '../api';
+import { profile } from 'console';
 const { getRequest, patchRequest, createRequest } = api;
+const token = localStorage.getItem('authToken');
 
 const initialState = {};
 const general = createModel<any>()({
@@ -15,14 +17,95 @@ const general = createModel<any>()({
                 test: data,
             };
         },
+        profile(state: any, data: any) {
+            return {
+                ...state,
+                profile: data,
+            };
+        },
+        set(state: any, data: any) {
+            return {
+                ...state,
+                set: data,
+            };
+        },
     },
     effects: (dispatch) => ({
+        login: async (data: any) => {
+            try {
+                const response = await fetch(
+                    `http://127.0.0.1:8000/api/api-token-auth/`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data.data),
+                    }
+                );
+
+                // Check if the response status is OK (2xx)
+                if (!response.ok) {
+                    // Handle HTTP errors
+                    const errorData = await response.json();
+                    console.log('HTTP Error +++++++>', errorData);
+                    data.onError && data.onError(errorData);
+                } else {
+                    const res = await response.json();
+                    console.log('Momomo +++++++>', res);
+
+                    // Assuming the token is returned as res.token, adjust if needed
+                    if (res.token) {
+                        localStorage.setItem('authToken', res.token);
+                    }
+
+                    data.onSuccess && data.onSuccess(res);
+                }
+            } catch (err) {
+                console.log('Fetch Error +++++++>', err);
+                data.onError && data.onError(err);
+            }
+        },
+
+        register: async (data: any) => {
+            try {
+                const response = await fetch(
+                    `http://127.0.0.1:8000/api/register/`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data.data),
+                    }
+                );
+
+                // Check if the response status is OK (2xx)
+                if (!response.ok) {
+                    // Handle HTTP errors
+                    const errorData = await response.json();
+                    console.log('HTTP Error +++++++>', errorData);
+                    data.onError && data.onError(errorData);
+                } else {
+                    const res = await response.json();
+                    console.log('Momomo +++++++>', res);
+                    data.onSuccess && data.onSuccess(res);
+                }
+            } catch (err) {
+                // console.log('Fetch Error +++++++>', err);
+                // data.onError && data.onError(err);
+            }
+        },
+
         getTest: async (data: any) => {
-            await fetch(`http://127.0.0.1:8000/sets/`)
+            await fetch(`http://127.0.0.1:8000/sets/all/sets`, {
+                headers: {
+                    'Authorization': `Token ${token}`,
+                }})
                 .then((r) => r.json())
                 .then((res: any) => {
                     console.log('Momomo +++++++>', res);
-                    data.onSuccess && data.onSuccess(res.results);
+                    data.onSuccess && data.onSuccess(res);
                 })
                 .catch((err) => {
                     console.log('+++++++>', err);
@@ -37,6 +120,7 @@ const general = createModel<any>()({
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Token ${token}`,
                 },
                 body: JSON.stringify(data.data),
             })
@@ -55,6 +139,7 @@ const general = createModel<any>()({
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Token ${token}`,
                 },
                 body: JSON.stringify(data.data),
             })
@@ -88,9 +173,18 @@ const general = createModel<any>()({
 
         getUserSet: async (data: any) => {
             console.log('two +++++++>');
-            await fetch(`http://127.0.0.1:8000/sets/2/`, {
-            })
-                .then((r) => r.json())
+            await fetch(`http://127.0.0.1:8000/sets/status/user/?status=approved,pending`, {
+                headers: {
+                    'Authorization': `Token ${token}`,
+                }})
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(
+                            `HTTP error! status: ${response.status}`
+                        );
+                    }
+                    return response.json();
+                })
                 .then((res: any) => {
                     console.log('Momomo +++++++>', res);
                     data.onSuccess && data.onSuccess(res);
@@ -119,6 +213,48 @@ const general = createModel<any>()({
                 });
         },
 
+        getHistory: async (data: any) => {
+            console.log('two +++++++>');
+            await fetch(
+                `http://localhost:8000/transactions/user-transactions/3/`
+            )
+                .then((r) => r.json())
+                .then((res: any) => {
+                    console.log('getHistory +++++++>', res);
+                    data.onSuccess && data.onSuccess(res);
+                })
+                .catch((err) => {
+                    console.log('getHistory+++++++>', err);
+                });
+        },
+
+        getProfile: async (data: any) => {
+            
+            await fetch(`http://localhost:8000/profiles/user`, {
+                headers: {
+                    Authorization: `Token ${token}`,
+                },
+            })
+                .then((r) => r.json())
+                .then((res: any) => {
+                    dispatch.general.profile(res);
+                    data.onSuccess && data.onSuccess(res);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+        getSet: async (data: any) => {
+            await fetch(`http://localhost:8000/sets/1/`)
+                .then((r) => r.json())
+                .then((res: any) => {
+                    dispatch.general.set(res);
+                    data.onSuccess && data.onSuccess(res);
+                })
+                .catch((err) => {
+                    console.log('getHistory+++++++>', err);
+                });
+        },
     }),
 });
 

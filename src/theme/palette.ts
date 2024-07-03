@@ -3,13 +3,13 @@ import colors from './colors';
 
 export const palette = {
     primary: {
-        light: colors.green[60],
-        main: colors.green[50],
-        dark: colors.green[40],
+        light: colors.blue[60],
+        main: colors.blue[50],
+        dark: colors.blue[40],
         contrastText: colors.common.white,
-        lightBg: colors.green[100],
-        border: colors.green[80],
-        textDark: colors.green[20],
+        lightBg: colors.blue[100],
+        border: colors.blue[80],
+        textDark: colors.blue[20],
     },
     secondary: {
         light: colors.orange[60],
@@ -48,13 +48,13 @@ export const palette = {
         textDark: colors.blue[20],
     },
     success: {
-        light: colors.green[60],
-        main: colors.green[50],
-        dark: colors.green[40],
+        light: colors.blue[60],
+        main: colors.blue[50],
+        dark: colors.blue[40],
         contrastText: colors.common.white,
-        lightBg: colors.green[100],
-        border: colors.green[80],
-        textDark: colors.green[20],
+        lightBg: colors.blue[100],
+        border: colors.blue[80],
+        textDark: colors.blue[20],
     },
     grey: {
         50: colors.grey[100],
@@ -88,7 +88,7 @@ export const palette = {
         level1: colors.grey[90],
         level2: colors.grey[80],
         backdrop: colors.grey[60],
-        snackbar: colors.green[60],
+        snackbar: colors.blue[60],
         tooltip: colors.grey[40],
     },
     border: {
@@ -100,16 +100,16 @@ export const palette = {
     icon: {
         default: colors.grey[70],
         dark: colors.grey[50],
-        active: colors.green[60],
+        active: colors.blue[60],
         contrast: colors.grey[100],
         white: colors.common.white,
     },
     action: {
         odd: colors.grey[100],
-        active: colors.green[100],
-        hover: colors.green[90],
-        selected: colors.green[100],
+        active: colors.blue[100],
+        hover: colors.blue[90],
+        selected: colors.blue[100],
         disabled: colors.grey[90],
-        focus: colors.green[100],
+        focus: colors.blue[100],
     }
 }

@@ -1,7 +1,7 @@
 {
   "name": "frontend",
-  "description": "Treeo frontend",
-  "author": "Fairventures worldwide",
+  "description": "bet",
+  "author": "Bet",
   "version": "2.0.0",
   "private": true,
   "engines": {
@@ -50,9 +50,11 @@
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
     "react-select": "^4.3.0",
+    "react-slick": "^0.30.2",
     "react-test-renderer": "^17.0.1",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
+    "slick-carousel": "^1.8.1",
     "slugify": "^1.6.6",
     "tokml": "^0.4.0",
     "typescript": "^4.0.3",

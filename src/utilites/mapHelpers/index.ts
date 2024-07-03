@@ -540,20 +540,3 @@ export const displayPlotsSuccessfullyUpdated = (data, map) => {
         console.log(e);
     }
 };
-// //Paint plot polygon
-// export const paintPlotPolygons = () => ({
-//     'fill-color': [
-//         'match',
-//         ['get', 'status'], 
-//         'recorded', plotColorCodes.recorded,
-//         'verified_tpi', plotColorCodes.verified_tpi, 
-//         'verified_treeo', plotColorCodes.verified_treeo,
-//         'prepared', plotColorCodes.prepared,
-//         'planted', plotColorCodes.planted,
-//         'closed', plotColorCodes.closed,
-//         'cancelled', plotColorCodes.cancelled,
-//         'rejected', plotColorCodes.rejected,
-//         plotColorCodes.default
-//     ],
-//     // 'fill-outline-color': 'black'
-// });
