@@ -197,6 +197,7 @@ const Dashboard = () => {
                             <TableCell>User</TableCell>
                             <TableCell>Status</TableCell>
                             <TableCell>Count</TableCell>
+                            <TableCell>Amount</TableCell>
                             <TableCell>Actions</TableCell>
                         </TableRow>
                     </TableHead>
@@ -206,6 +207,7 @@ const Dashboard = () => {
                                 <TableCell>{item.user.username}</TableCell>
                                 <TableCell><Status value={item.status} /></TableCell>
                                 <TableCell>{item.count}</TableCell>
+                                <TableCell>{item?.account?.Amount}</TableCell>
                                 <TableCell>
                                     {item.status === 'pending' ? (
                                         <form

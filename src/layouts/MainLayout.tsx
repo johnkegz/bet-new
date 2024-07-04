@@ -46,16 +46,6 @@ function MainLayout({ children }: IProps) {
                 // handle error
             },
         });
-
-        // dispatch.general.getSet({
-        //     onSuccess: (res) => {
-        //         console.log('John John John0werwew ++++>', res);
-        //         // setData(res)
-        //     },
-        //     onError: (eee) => {
-        //         // handle error
-        //     },
-        // });
     }, []);
 
     return (

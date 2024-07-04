@@ -2,7 +2,7 @@ import { createModel } from '@rematch/core';
 import api from '../api';
 import { profile } from 'console';
 const { getRequest, patchRequest, createRequest } = api;
-const token = localStorage.getItem('authToken');
+
 
 const initialState = {};
 const general = createModel<any>()({
@@ -98,6 +98,7 @@ const general = createModel<any>()({
         },
 
         getTest: async (data: any) => {
+            const token = localStorage.getItem('authToken');
             await fetch(`http://127.0.0.1:8000/sets/all/sets`, {
                 headers: {
                     'Authorization': `Token ${token}`,
@@ -115,7 +116,7 @@ const general = createModel<any>()({
                 });
         },
         requestSet: async (data: any) => {
-            console.log('herererere +++++++>');
+            const token = localStorage.getItem('authToken');
             await fetch('http://127.0.0.1:8000/sets/', {
                 method: 'POST',
                 headers: {
@@ -134,7 +135,7 @@ const general = createModel<any>()({
                 });
         },
         approveSet: async (data: any) => {
-            console.log('herererere +++++++>');
+            const token = localStorage.getItem('authToken');
             await fetch(`http://127.0.0.1:8000/sets/${data.id}/`, {
                 method: 'PATCH',
                 headers: {
@@ -172,7 +173,7 @@ const general = createModel<any>()({
         },
 
         getUserSet: async (data: any) => {
-            console.log('two +++++++>');
+            const token = localStorage.getItem('authToken');
             await fetch(`http://127.0.0.1:8000/sets/status/user/?status=approved,pending`, {
                 headers: {
                     'Authorization': `Token ${token}`,
@@ -187,7 +188,8 @@ const general = createModel<any>()({
                 })
                 .then((res: any) => {
                     console.log('Momomo +++++++>', res);
-                    data.onSuccess && data.onSuccess(res);
+                    dispatch.general.set(res[0])
+                    data.onSuccess && data.onSuccess(res[0]);
                 })
                 .catch((err) => {
                     console.log('+++++++>', err);
@@ -195,11 +197,12 @@ const general = createModel<any>()({
         },
 
         createTranction: async (data: any) => {
-            console.log('two +++++++>');
+             const token = localStorage.getItem('authToken');
             await fetch(`http://127.0.0.1:8000/transactions/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Token ${token}`,
                 },
                 body: JSON.stringify(data.data),
             })
@@ -214,9 +217,13 @@ const general = createModel<any>()({
         },
 
         getHistory: async (data: any) => {
-            console.log('two +++++++>');
+            const token = localStorage.getItem('authToken');
             await fetch(
-                `http://localhost:8000/transactions/user-transactions/3/`
+                `http://localhost:8000/transactions/user-transactions/3/`, {
+                headers: {
+                    'Authorization': `Token ${token}`,
+                }
+            }
             )
                 .then((r) => r.json())
                 .then((res: any) => {
@@ -229,7 +236,7 @@ const general = createModel<any>()({
         },
 
         getProfile: async (data: any) => {
-            
+            const token = localStorage.getItem('authToken');
             await fetch(`http://localhost:8000/profiles/user`, {
                 headers: {
                     Authorization: `Token ${token}`,
@@ -242,17 +249,6 @@ const general = createModel<any>()({
                 })
                 .catch((err) => {
                     console.log(err);
-                });
-        },
-        getSet: async (data: any) => {
-            await fetch(`http://localhost:8000/sets/1/`)
-                .then((r) => r.json())
-                .then((res: any) => {
-                    dispatch.general.set(res);
-                    data.onSuccess && data.onSuccess(res);
-                })
-                .catch((err) => {
-                    console.log('getHistory+++++++>', err);
                 });
         },
     }),

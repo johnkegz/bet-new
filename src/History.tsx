@@ -92,7 +92,7 @@ const History = () => {
                 Transaction Data
             </Typography> */}
             <div className={classes.gridContainer}>
-                {data.map((row) => (
+                {data && data.map((row) => (
                     <Paper className={classes.card} key={row.id}>
                         <Typography className={classes.leftPart}>
                         <Typography className={classes.cardBody}>

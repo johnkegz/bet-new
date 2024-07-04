@@ -22,13 +22,10 @@ const Home = () => {
         dispatch.general.getUserSet({
             onSuccess: (res) => {
                 console.log('000000 ++++>', res);
-                if(res.length !== 0 && res[0].status === 'approved'){
-                    alert(1)
+                if(res.length !== 0 && res.status === 'approved'){
                     router.push('/play')
                 }
-                if(res.length !== 0 && res[0].status === 'pending'){
-                    // router.push('/frozen')
-                    alert(0)
+                if(res.length !== 0 && res.status === 'pending'){
                     handleClickOpen()
                 }
 

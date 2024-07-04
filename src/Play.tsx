@@ -61,14 +61,14 @@ const Play = () => {
                 product: Math.floor(Math.random() * 10),
                 amount_spent: '1500',
                 commision: '5',
-                set: 1
+                set: store?.general?.set?.id
             }
             })
         }
     };
 
   
-
+console.log("store.general.profile>>>> ", store.general.profile, store?.general?.set)
     return (
         <div style={{ height: '100vh', marginTop: '100px' }}>
             <Grid container spacing={2}>

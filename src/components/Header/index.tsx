@@ -40,11 +40,6 @@ const headersData = [
         href: '/history',
     },
     {
-        label: 'Market',
-        name: 'market',
-        href: '/user',
-    },
-    {
         label: 'Dashboard',
         name: 'Dashboard',
         href: '/dashboard',
@@ -166,7 +161,6 @@ export default function Header() {
     }, []);
 
     const selectProject = () => {
-        //TODO: Permission to be fixed when view dashboard permission is add to the DB
         return (
             <>
                 <TextFields
@@ -175,7 +169,6 @@ export default function Header() {
                 />
             </>
         );
-        //return (<>{state.users.user.userProject && checkViewUIElementPermission(pagePermissions.people.roleAndPermissions[0], state.users.user.userProject) && <TextFields organizations={organizations} handleCurrentOrganization={handleCurrentOrganization} />}</>);
     };
 
     const handleLogout = () => {
@@ -186,7 +179,6 @@ export default function Header() {
     const displayDesktop = () => {
         return (
             <Toolbar className={toolbar}>
-                <img src={Logo} className={logo} alt="Logo" />
                 {selectProject()}
                 <div className={classes.menuLinks}>
                     {getMenuButtons()}
